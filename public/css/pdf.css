@@ -1,0 +1,108 @@
+.principal {
+  width: 100%;
+  height: 100%;
+}
+.header {
+  height: 130px;
+  width: 100%;
+}
+    .header .img-logo {
+        display: inline-block;
+        float: left;
+        height: 70%;
+        width: 20%;
+    }
+    .header div {
+      text-align: center;
+      display: inline-block;
+      float: left;
+      height: 130px;
+      width: 49%;
+    }
+    .header .img-person {
+        display: inline-block;
+        float: left;
+        width: 30%;
+        height: 100%;
+    }
+.info-code {
+  height: 75px;
+  width: 100%;
+}
+.container {
+  /*background: red;
+  border: solid 1.3px black;*/
+  margin-top: 10px;
+  height: auto;
+  width: 100%;
+  padding: 0;
+}
+.title {
+  text-align: left;
+  border-bottom: solid 1.3px black;
+  color: white;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-family: arial;
+  margin: 0;
+  background: blue;
+  padding-left: 10px;
+}
+.info-text{
+  font-size: 0;
+  width: 100%;
+  padding: 10px 0;
+}
+    .info-text .label,
+    .info-text .value {
+      box-sizing: border-box;
+      font-size: 12px;
+      padding: 3px 5px;
+    }
+    .info-text .label {
+      display: inline-block;
+      width: 15%;
+    }
+    .info-text .value {
+      border-bottom: solid 0.5px black;
+      display: inline-block;
+      width: 32%;
+    }
+    .info-text .total {
+      width: 79%;
+    }
+.table-brother {
+    width: 100%;
+    height: auto;
+    font-size: 12px;
+}
+.job-title {
+    border-bottom: solid 1 black;
+}
+.footer {
+  border-top: 1px solid black;
+  text-align: center;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.footer2 {
+  padding-top: 100px;
+}
+
+.conclusion td{
+  height: 15px;
+}
+.photo-personal {
+      width: 50%;
+      height: 300px;
+      border: solid 1px black;
+}
+.photo-personal2 {
+      border: solid 1px black;
+      height: 900px;
+      width: 100%;
+}
+.anexo-title {
+  margin-top: 50px;
+}
