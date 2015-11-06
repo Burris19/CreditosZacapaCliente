@@ -20,7 +20,7 @@ class ClientesController extends CRUDController
         'nit' => 'required',
         'nombre' => 'required',
         'apellido' => 'required',
-        'edad' => 'required'
+        'fechaNacimiento' => 'required'
     ];
 
     protected $rulesCredito = [

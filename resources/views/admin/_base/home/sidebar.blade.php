@@ -5,6 +5,9 @@
       <a href="clientes">
         <i class="glyphicon glyphicon-user"></i> <span>Clientes</span>
       </a>
+      <a href="pagos">
+        <i class="glyphicon glyphicon-user"></i> <span>Pagos</span>
+      </a>
     </li>
   </ul>
 </section>

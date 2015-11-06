@@ -16,7 +16,7 @@ class Cliente extends Model
         'apellido',
         'direccion',
         'telefono',
-        'edad'
+        'fechaNacimiento'
     ];
 
 

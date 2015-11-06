@@ -19,4 +19,20 @@ class Transaccion extends Model
         'idCredito',
         'idTipoMoneda'
     ];
+
+    public $relations = [
+        'credito',
+        'moneda'
+    ];
+
+    public function credito()
+    {
+        return $this->hasOne('App\Repositories\Creditos\Creditos','id','idCredito')->with('cliente');
+    }
+
+    public function moneda()
+    {
+        return $this->hasOne('App\Repositories\TipoMoneda\TipoMoneda','id','idTipoMoneda');
+    }
+
 }

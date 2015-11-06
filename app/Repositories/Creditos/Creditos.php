@@ -17,12 +17,18 @@ class Creditos extends Model
     ];
 
     public $relations = [
-        'details'
+        'details',
+        'cliente'
     ];
 
     public function details()
     {
         return $this->hasMany('App\Repositories\Cuotas\Cuotas', 'idCredito', 'id');
+    }
+
+    public function cliente()
+    {
+        return $this->hasOne('App\Repositories\Clientes\Cliente','id','idCliente');
     }
 
 

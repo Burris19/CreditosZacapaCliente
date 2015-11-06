@@ -59,9 +59,9 @@
                     <div class="col-sm-4">
                         {!! Form::number('telefono',null,['class' => 'form-control', 'placeholder' => 'Telefono Del Cliente', 'required']) !!}
                     </div>
-                    <label for="fecha" class="col-sm-2 control-label">Edad</label>
+                    <label for="fecha" class="col-sm-2 control-label">Nacimiento</label>
                     <div class="col-sm-4">
-                        {!! Form::number('edad',null,['class' => 'form-control', 'placeholder' => 'Edad del Cliente', 'required']) !!}
+                        {!! Form::date('fechaNacimiento',\Carbon\Carbon::now(),['class' => 'form-control']) !!}
                     </div>
                 </div>
                 <button type="submit" class="hide">kkk</button>
