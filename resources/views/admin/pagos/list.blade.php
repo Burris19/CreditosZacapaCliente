@@ -50,6 +50,8 @@
         </div>
     </div>
 @endsection
+
+@include('admin.pagos.create')
 <div id="div-modal"></div>
 @section('other-scripts')
     {!! Html::script('plugins/datatables/jquery.dataTables.min.js') !!}
