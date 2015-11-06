@@ -13,12 +13,12 @@ class CreateTipoMonedaTable extends Migration
     public function up()
     {
         Schema::create('tipoMoneda', function (Blueprint $table) {
-            $table->increments('id');
+                      $table->increments('id');
 
-            $table->string('descripcion');
-            $table->decimal('cantidad',8,2);
+                        $table->string('descripcion');
+                        $table->decimal('cantidad',8,2);
 
-            $table->timestamps();
+                        $table->timestamps();
         });
     }
 

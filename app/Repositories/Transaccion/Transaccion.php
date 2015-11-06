@@ -9,12 +9,14 @@ class Transaccion extends Model
     protected $table = 'transacciones';
 
     protected $fillable = [
-        'codigo',
+        'code',
+        'tipoTransaccion',
+        'monto',
+        'descripcion',
+        'tipoTransccion',
+        'estado',
         'idCajero',
         'idCredito',
-        'idTipoMoneda',
-        'tipoTransccion',
-        'monto',
-        'descripcion'
+        'idTipoMoneda'
     ];
 }
