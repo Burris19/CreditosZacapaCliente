@@ -51,7 +51,7 @@
     </div>
 @endsection
 
-@include('admin.pagos.create')
+@include('admin.pagos.create',compact('monedas'))
 <div id="div-modal"></div>
 @section('other-scripts')
     {!! Html::script('plugins/datatables/jquery.dataTables.min.js') !!}

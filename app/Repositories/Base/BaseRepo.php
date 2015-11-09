@@ -29,6 +29,17 @@ abstract class BaseRepo implements BaseInterface {
                     ->first();
     }
 
+
+    public function findByFieldAnd($field, $value, $field2, $value2)
+    {
+        return $this->getModel()
+            ->where($field,'=',$value)
+            ->where($field2,'!=',$value2)
+            ->get()
+            ->first();
+    }
+
+
     public function findWithRelations($id)
     {
         return $this->getModel()

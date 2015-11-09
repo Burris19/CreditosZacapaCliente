@@ -18,4 +18,6 @@ interface BaseInterface {
     public function getWithRelations();
 
     public function lists($value,$value2);
+
+    public function findByFieldAnd($field, $value,$field2, $value2);
 }

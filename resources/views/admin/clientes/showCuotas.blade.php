@@ -25,7 +25,6 @@
                             <th>Estado</th>
                             <th>Fecha de cancelacion</th>
                             <th></th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -36,8 +35,15 @@
                                 <td>{{ $cuota['montoCuota'] }} </td>
                                 <td>{{ $cuota['estado'] }} </td>
                                 <td>
-                                    @if($cuota['estado'] == 'cancelada')
+                                    @if($cuota['estado'] == 'Cancelada')
                                         {{ $cuota['updated_at'] }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($cuota['estado'] === 'Cancelada')
+                                        <img src="entregado.png" alt="">
+                                    @else
+                                        <img src="bodega.png" alt="">
                                     @endif
                                 </td>
                             </tr>

@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <label for="fecha" class="col-sm-2 control-label">Nombre</label>
                     <div class="col-sm-4">
-                        {!! Form::number('nombre',null,['class' => 'form-control', 'readonly'=> "readonly", 'id' => 'nombre' ]) !!}
+                        {!! Form::text('nombre',null,['class' => 'form-control', 'readonly'=> "readonly", 'id' => 'nombre' ]) !!}
                     </div>
                     <label for="fecha" class="col-sm-2 control-label">Direccion</label>
                     <div class="col-sm-4">
@@ -65,7 +65,7 @@
                 <div class="form-group">
                     <label for="nombre" class="col-sm-2 control-label">Tipo Moneda</label>
                     <div class="col-sm-4">
-                        {!! Form::select('tipoMoneda', array('L' => 'Large', 'S' => 'Small'),null,['class' => 'form-control'] ) !!}
+                        {!! Form::select('tipoMoneda', $monedas,null,['class' => 'form-control' , 'id' => 'selectMoneda', 'disabled' => 'disabled'] ) !!}
                     </div>
 
                     <label for="area" class="col-sm-2 control-label">Cantidad</label>

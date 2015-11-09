@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Clientes\ClienteRepo;
 use App\Repositories\Creditos\CreditoRepo;
 use App\Repositories\Cuotas\CuotaRepo;
+use App\Repositories\TipoMoneda\TipoMonedaRepo;
 use Carbon\Carbon;
 
 
@@ -30,16 +31,19 @@ class ClientesController extends CRUDController
     ];
 
     protected $module='clientes';
-    protected $creditoRepo = null;
+    protected $creditRepo = null;
     protected $cuotaRepo = null;
+    protected $tipoMonedaRepo = null;
 
     function __construct(ClienteRepo $clientesRepo,
-                         CreditoRepo $creditoRepo,
-                         CuotaRepo $cuotaRepo)
+                         CreditoRepo $creditRepo,
+                         CuotaRepo $cuotaRepo,
+                         TipoMonedaRepo $tipoMonedaRepo)
     {
-        $this->repo=$clientesRepo;
-        $this->creditoRepo = $creditoRepo;
+        $this->repo = $clientesRepo;
+        $this->creditRepo = $creditRepo;
         $this->cuotaRepo = $cuotaRepo;
+        $this->tipoMonedaRepo = $tipoMonedaRepo;
     }
 
     public function store(Request $request)
@@ -91,9 +95,28 @@ class ClientesController extends CRUDController
 
     public function show(Request $request, $id)
     {
-        $credit = $this->creditoRepo->findByField('idCliente',$id);
-        $data = $this->creditoRepo->findWithRelations($credit->id);
+        $credit = $this->creditRepo->findByField('idCliente',$id);
+        $data = $this->creditRepo->findWithRelations($credit->id);
         return view($this->root . '/' . $this->module .'/showCuotas',compact('data'));
 
     }
+
+    public function edit($codigo)
+    {
+        $client = $this->repo->findByField('codigo',$codigo);
+
+        if($client)
+        {
+            $credit = $this->creditRepo->findByField('idCliente',$client->id);
+            $share = $this->cuotaRepo->findByFieldAnd('idCredito',$credit->id,'estado','Cancelada');
+            $success = true;
+            return compact('success','client','share','credit');
+        }else{
+            $success = false;
+            return compact('success');
+        }
+
+    }
+
+
 }

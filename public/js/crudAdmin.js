@@ -131,10 +131,6 @@ $(function(){
         });
     });
 
-
-    /*
-        Funcion calcular cuota mensual
-     */
     $('.monthlyFee').change(function(){
         var interesCalculado = 0;
         var noCuotasCalculado = 0;
@@ -153,5 +149,77 @@ $(function(){
 
 
     })
+
+    $('#codigo').keypress(function(e){
+        if(e.keyCode == 13)
+        {
+            var codigo = $(this).val();
+            getInfo(codigo);
+        }
+
+    });
+
+    function getInfo(code)
+    {
+        var url = 'clientes/' + code + '/edit';
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(response) {
+
+                if(response.success)
+                {
+                    $('#dpi').val(response['client']['dpi']);
+                    $('#nombre').val(response['client']['nombre'] + ' ' + response['client']['apellido']);
+                    $('#direccion').val(response['client']['direccion']);
+                    $('#monto').val(response['share']['montoCuota']);
+                    $('#fechaCuota').val(response['share']['fechaPago']);
+                    var id = $('#selectMoneda').val();
+                    getInfoMoneda(id);
+                    $("#selectMoneda").removeAttr("disabled");
+                }
+                else{
+                    $('#dpi').val('');
+                    $('#nombre').val('');
+                    $('#direccion').val('');
+                    $('#monto').val('');
+                    $('#fechaCuota').val('');
+                    $('#montoMoneda').val('');
+                    $("#selectMoneda").prop('disabled', 'disabled');
+                }
+
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                console.log(xhr.status);
+                console.error(thrownError);
+            }
+        });
+    }
+
+    $('#selectMoneda').on('change',function(){
+        var id = $(this).val();
+        getInfoMoneda(id);
+
+    });
+
+    function getInfoMoneda(id){
+        var url = 'tipoMonedas/' + id;
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(response) {
+                var moneda = response.cantidad;
+                var monto = $('#monto').val();
+                var montoMoneda = monto / moneda;
+                $('#montoMoneda').val(montoMoneda.toFixed(2));
+
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                console.log(xhr.status);
+                console.error(thrownError);
+            }
+        });
+    }
+
 
 });
