@@ -1,5 +1,4 @@
 $(function(){
-
     var message = $('.response');
     message.hide();
     $('.create').on('click',function(){
@@ -174,6 +173,8 @@ $(function(){
                     $('#direccion').val(response['client']['direccion']);
                     $('#monto').val(response['share']['montoCuota']);
                     $('#fechaCuota').val(response['share']['fechaPago']);
+                    $('#idCredito').val(response['credit']['id']);
+                    $('#idShare').val(response['share']['id']);
                     var id = $('#selectMoneda').val();
                     getInfoMoneda(id);
                     $("#selectMoneda").removeAttr("disabled");
