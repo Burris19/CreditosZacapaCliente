@@ -10,6 +10,8 @@ use App\Repositories\Clientes\ClienteRepo;
 use App\Repositories\Creditos\CreditoRepo;
 use App\Repositories\Cuotas\CuotaRepo;
 use App\Repositories\TipoMoneda\TipoMonedaRepo;
+use App\Repositories\Cajero\CajeroRepo;
+use App\Repositories\MovimientoLeer\MovimientosRepo;
 use Carbon\Carbon;
 
 
@@ -34,17 +36,44 @@ class ClientesController extends CRUDController
     protected $creditRepo = null;
     protected $cuotaRepo = null;
     protected $tipoMonedaRepo = null;
+    protected $cajeroRepo = null;
+    protected $movimientoRepo = null;
 
     function __construct(ClienteRepo $clientesRepo,
                          CreditoRepo $creditRepo,
                          CuotaRepo $cuotaRepo,
-                         TipoMonedaRepo $tipoMonedaRepo)
+                         TipoMonedaRepo $tipoMonedaRepo,
+                         CajeroRepo $cajeroRepo,
+                         MovimientosRepo $movimientosRepo)
     {
         $this->repo = $clientesRepo;
         $this->creditRepo = $creditRepo;
         $this->cuotaRepo = $cuotaRepo;
         $this->tipoMonedaRepo = $tipoMonedaRepo;
+        $this->cajeroRepo = $cajeroRepo;
+        $this->movimientoRepo = $movimientosRepo;
     }
+
+    public function index()
+    {
+        $idUser = \Auth::user()->id;
+        $cajero = $this->cajeroRepo->findByField('idUsuario',$idUser);
+        $idSucursal = $cajero->idSucursal;
+
+        $clientes = $this->movimientoRepo->findByFieldAnd2('idBranch',$idSucursal,'estado',1);
+
+        $idClientes= [];
+        foreach ($clientes as $key => $value)
+        {
+            $idClientes[$key] = $value->id;
+        }
+        $data = \DB::table('clientes')
+            ->whereIn('id', $idClientes)->get();
+
+        return view($this->root . '/' . $this->module  .'/list',compact('data'));
+
+    }
+
 
     public function store(Request $request)
     {

@@ -14,14 +14,14 @@ class CreateTransaccionesTable extends Migration
     {
         Schema::create('transacciones', function (Blueprint $table) {
             $table->increments('id');
-/*
+
             $table->string('code');
             $table->enum('tipoTransaccion',['credito','debito']);
             $table->decimal('monto',8,2);
             $table->string('descripcion');
-            $table->enum('estado',['atrasado','sincronizado','adelantado','pendiente']);
+            $table->enum('estado',['registrado','atrasado','sincronizado','adelantado','pendiente']);
 
-            $table->integer('idCajero')->unsigned();
+            $table->integer('idCajero')->unsigned()->nullable();
             $table->foreign('idCajero')->references('id')->on('cajeros');
 
             $table->integer('idCredito')->unsigned();
@@ -29,7 +29,7 @@ class CreateTransaccionesTable extends Migration
 
             $table->integer('idTipoMoneda')->unsigned();
             $table->foreign('idTipoMoneda')->references('id')->on('tipoMoneda');
-*/
+
             $table->timestamps();
         });
     }
