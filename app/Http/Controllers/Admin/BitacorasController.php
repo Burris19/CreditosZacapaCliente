@@ -8,17 +8,26 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\Bitacora\BitacoraRepo;
 use App\Repositories\Cajero\CajeroRepo;
+use App\Repositories\Branch\BranchRepo;
+use App\Repositories\Sucursales\SucursalRepo;
 
 class BitacorasController extends Controller
 {
     protected $repo = null;
     protected $cajeroRepo = null;
+    protected $sucursalRepo = null;
+    protected $branchRepo = null;
 
 
-    public function __construct(BitacoraRepo $bitacoraRepo, CajeroRepo $cajeroRepo)
+    public function __construct(BitacoraRepo $bitacoraRepo,
+                                CajeroRepo $cajeroRepo,
+                                BranchRepo $branchRepo,
+                                SucursalRepo $sucursalRepo)
     {
         $this->repo = $bitacoraRepo;
         $this->cajeroRepo = $cajeroRepo;
+        $this->sucursalRepo = $sucursalRepo;
+        $this->branchRepo = $branchRepo;
     }
 
 
@@ -35,11 +44,15 @@ class BitacorasController extends Controller
         $data = $request->all();
         $idUser = \Auth::user()->id;
         $cajero = $this->cajeroRepo->findByField('idUsuario', $idUser);
+        $idSucursal = $cajero->idSucursal;
+        $sucursal = $this->sucursalRepo->findOrFail($idSucursal);
+
         $bitacora['tipo'] = 'pendiente';
-        $bitacora['idBranch'] = '';
+        $bitacora['idBranch'] = $sucursal->idBranch;
         $bitacora['id_cajero'] = $cajero->id;
 
         $bitacora['codigo_cliente'] = $data['codigo'];
+        $bitacora['codigo_credito'] = $data['codigo'];
         $bitacora['dpi'] = $data['dpi'];
         $bitacora['nit'] = $data['nit'];
         $bitacora['nombre'] = $data['nombre'];
@@ -66,7 +79,36 @@ class BitacorasController extends Controller
         return compact('success','message');
     }
 
+    public function pagos(Request $request)
+    {
+        $data = $request->all();
+        $idUser = \Auth::user()->id;
+        $cajero = $this->cajeroRepo->findByField('idUsuario', $idUser);
+        $idSucursal = $cajero->idSucursal;
+        $sucursal = $this->sucursalRepo->findOrFail($idSucursal);
 
+        $bitacora['tipo'] = 'pendiente';
+        $bitacora['idBranch'] = $sucursal->idBranch;
+        $bitacora['id_cajero'] = $cajero->id;
+        $bitacora['codigo_cliente'] = $data['codigo'];
+        $bitacora['nombre'] = $data['nombre'];
+        $bitacora['id_tipo_moneda'] = $data['tipoMoneda'];
+        $bitacora['id_credito'] = $data['idCredito'];
+        $bitacora['id_cuota'] = $data['idShare'];
+        $bitacora['cantidad_credito'] = $data['monto'];
+        $bitacora['monto_transaccion'] = $data['monto'];
+        $bitacora['tipo_transaccion'] = 'debito';
+        $bitacora['mensaje'] = 'Se registro un nuevo pago';
+
+        $success = true;
+        $message = 'Pago Creado Exitosamente';
+        if(! $this->repo->create($bitacora))
+        {
+            $success = false;
+            $message = 'Error al crear credito';
+        }
+        return compact('success','message');
+    }
 
 
 

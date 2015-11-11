@@ -7,6 +7,11 @@
 @endsection
 
 @section('content')
+    <div class="response" class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong></strong>
+    </div>
+
     <div class="box-body">
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -20,7 +25,7 @@
                     </div>
                     <label for="fecha" class="col-sm-2 control-label">Enviar Datos al Servidor</label>
                     <div class="col-sm-4">
-                        <button class="btn btn-danger" id="btn-enviar" data-id="{{ $idSucursal }}">Iniciar envio</button>
+                        <button class="btn btn-danger" id="btn-enviar" data-id="{{ $idCajero }}">Iniciar envio</button>
                     </div>
                 </div>
             </div>

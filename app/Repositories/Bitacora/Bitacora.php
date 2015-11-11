@@ -37,5 +37,6 @@ class Bitacora extends Model
         'interes_credito',
         'numero_cuotas_credito',
         'cuota_mensual_credito',
+        'id_cuota'
     ];
 }

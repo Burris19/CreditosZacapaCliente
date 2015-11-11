@@ -32,6 +32,8 @@ Route::group(['prefix' => '/', 'namespace' => 'Admin','middleware' => 'auth'], f
     Route::resource('tipoMonedas','TipoMonedas');
     Route::resource('sincronizar','SincronizarController');
     Route::resource('bitacora','BitacorasController');
+    Route::POST('bitacoraPagos','BitacorasController@pagos');
+    Route::get('sendData/{id}','SincronizarController@enviarDatos');
 
 });
 

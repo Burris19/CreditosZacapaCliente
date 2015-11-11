@@ -18,7 +18,6 @@ use Mockery\CountValidator\Exception;
 class PagosController extends CRUDController
 {
     protected $module = 'pagos';
-
     protected $transaccionRepo = null;
     protected $tipoMonedaRepo = null;
     protected $clienteRepo = null;

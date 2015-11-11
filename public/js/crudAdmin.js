@@ -243,6 +243,39 @@ $(function(){
 
     })
 
+    $('#btn-enviar').on('click',function(e){
+        var id = $(this).data('id');
+        var url = 'sendData/' + id;
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(response) {
+                console.log(response);
+                if(response) {
+                    if(response.success){
+                        console.log(response.message);
+                        $('.response strong').css('color','black');
+                        $('.response strong').text(response.message);
+                        message.show();
+                    }else{
+                        console.log(response.message);
+                        $('.response strong').text('Error al guardar el registro');
+                        $('.response strong').css('color','orange');
+                        message.show();
+
+                    }
+                    setTimeout(function(){
+                        window.location.href = 'sincronizar';
+                    },2000)
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                console.log(xhr.status);
+                console.error(thrownError);
+            }
+        });
+    });
+
 
 
 
