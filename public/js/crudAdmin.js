@@ -223,4 +223,27 @@ $(function(){
     }
 
 
+    $('#btn-leer').on('click',function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+
+        var url = 'sincronizar/' + id;
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(response) {
+              console.log(response);
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                console.log(xhr.status);
+                console.error(thrownError);
+            }
+        });
+
+
+    })
+
+
+
+
 });

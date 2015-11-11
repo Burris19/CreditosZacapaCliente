@@ -30,6 +30,7 @@ Route::group(['prefix' => '/', 'namespace' => 'Admin','middleware' => 'auth'], f
     Route::resource('clientes','ClientesController');
     Route::resource('pagos','PagosController');
     Route::resource('tipoMonedas','TipoMonedas');
+    Route::resource('sincronizar','SincronizarController');
 
 });
 

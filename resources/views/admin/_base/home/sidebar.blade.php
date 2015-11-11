@@ -8,6 +8,9 @@
       <a href="pagos">
         <i class="glyphicon glyphicon-user"></i> <span>Pagos</span>
       </a>
+      <a href="sincronizar">
+        <i class="glyphicon glyphicon-user"></i> <span>Sincronizacion</span>
+      </a>
     </li>
   </ul>
 </section>

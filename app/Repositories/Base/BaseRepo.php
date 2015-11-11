@@ -30,6 +30,14 @@ abstract class BaseRepo implements BaseInterface {
     }
 
 
+    public function findByField2($field, $value, $comparator = '=')
+    {
+        return $this->getModel()
+            ->where($field,$comparator,$value)
+            ->get();
+    }
+
+
     public function findByFieldAnd($field, $value, $field2, $value2)
     {
         return $this->getModel()
