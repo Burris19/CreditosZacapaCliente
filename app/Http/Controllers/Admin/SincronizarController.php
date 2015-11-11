@@ -144,7 +144,36 @@ class SincronizarController extends Controller
 
                 }else{
                     //abono de deuda
+                    //Registro la transaccion
+                    $transaccion['code'] = 'tr' + time() ;
+                    $transaccion['tipoTransaccion'] = 'debito';
+                    $transaccion['monto'] = $value->cantidad_credito;
+                    $transaccion['estado'] = 'registrado';
+                    $transaccion['idCajero'] = $idCajero;
+                    $transaccion['idCredito'] = $value->id_credito;
+                    $transaccion['idTipoMoneda'] = $value->id_tipo_moneda;
+                    $this->transaccionRepo->create($transaccion);
 
+
+                    //Cancelar la cuota
+                    $cuota = $this->cuotaRepo->findOrFail($value->id_cuota);
+                    $cuota['estado'] = 'Cancelada';
+                    $cuota['balance'] = 00.00;
+                    $cuota->save();
+
+
+                    //Actualizar el credito
+
+                    $credito = $this->creditoRepo->findOrFail($value->id_credito);
+                    $credito['saldo'] = $credito['saldo'] - $value['monto_transaccion'];
+                    $credito->save();
+
+
+                    //Cancelar la bitacora
+                    $bitacoraData = $this->bitacoraRepo->findOrFail($value->id);
+                    $bitacoraData['tipo'] = 'registrado';
+                    $bitacoraData->save();
+                    $contador++;
                 }
             }
         }
