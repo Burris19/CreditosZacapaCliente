@@ -11,6 +11,9 @@
       <a href="sincronizar">
         <i class="glyphicon glyphicon-user"></i> <span>Sincronizacion</span>
       </a>
+      <a href="bitacora">
+        <i class="glyphicon glyphicon-user"></i> <span>Bitacora</span>
+      </a>
     </li>
   </ul>
 </section>

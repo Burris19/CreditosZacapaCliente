@@ -13,7 +13,7 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong></strong>
     </div>
-    {!! Form::open(['url' => 'clientes','id'=>'form-create','method' => 'POST','class'=>'form-horizontal', 'data-url' => 'clientes' ]) !!}
+    {!! Form::open(['url' => 'clientes','id'=>'form-create','method' => 'POST','class'=>'form-horizontal', 'data-url' => 'bitacora' ]) !!}
         <div class="box-body">
             <div class="panel panel-warning">
               <div class="panel-heading">
@@ -78,7 +78,7 @@
               <div class="form-group">
                   <label for="fecha" class="col-sm-2 control-label">Cantidad</label>
                   <div class="col-sm-4">
-                      {!! Form::number('catidad',null,['class' => 'form-control monthlyFee share', 'placeholder' => 'Cantidad credito', 'required']) !!}
+                      {!! Form::number('cantidad',null,['class' => 'form-control monthlyFee share', 'placeholder' => 'Cantidad credito', 'required']) !!}
                   </div>
                   <label for="fecha" class="col-sm-2 control-label">Interes</label>
                   <div class="col-sm-4">
