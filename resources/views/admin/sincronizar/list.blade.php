@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="fecha" class="col-sm-2 control-label">Leer datos del Servidor</label>
                     <div class="col-sm-4">
-                        <button class="btn btn-primary" id="btn-leer" data-id="{{ $idSucursal }}">Iniciar lectura</button>
+                        <button class="btn btn-primary" id="btn-leer" data-id="{{ $idCajero }}">Iniciar lectura</button>
                     </div>
                     <label for="fecha" class="col-sm-2 control-label">Enviar Datos al Servidor</label>
                     <div class="col-sm-4">

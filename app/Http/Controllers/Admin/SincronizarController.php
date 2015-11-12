@@ -16,6 +16,9 @@ use App\Repositories\Clientes\ClienteRepo;
 use App\Repositories\Creditos\CreditoRepo;
 use App\Repositories\Cuotas\CuotaRepo;
 use App\Repositories\Transaccion\TransaccionRepo;
+use App\Repositories\ClienteHost\ClienteHostRepo;
+use App\Repositories\CuotasHost\CuotasHostRepo;
+
 class SincronizarController extends Controller
 {
 
@@ -28,6 +31,8 @@ class SincronizarController extends Controller
     protected $creditoRepo = null;
     protected $cuotaRepo = null;
     protected $transaccionRepo = null;
+    protected $clienteHostRepo = null;
+    protected $cuotasHostRepo = null;
 
     public function __construct(CajeroRepo $cajeroRepo,
                                 MovimientosRepo $movimientosRepo,
@@ -36,7 +41,9 @@ class SincronizarController extends Controller
                                 BitacoraRepo $bitacoraRepo,
                                 ClienteRepo $clienteRepo,
                                 CreditoRepo $creditoRepo,
-                                CuotaRepo $cuotaRepo,TransaccionRepo $transaccionRepo)
+                                CuotaRepo $cuotaRepo,
+                                TransaccionRepo $transaccionRepo,
+                                ClienteHostRepo $clienteHostRepo, CuotasHostRepo $cuotasHostRepo)
     {
         $this->cajeroRepo = $cajeroRepo;
         $this->repo = $movimientosRepo;
@@ -47,6 +54,8 @@ class SincronizarController extends Controller
         $this->creditoRepo = $creditoRepo;
         $this->cuotaRepo = $cuotaRepo;
         $this->transaccionRepo = $transaccionRepo;
+        $this->clienteHostRepo = $clienteHostRepo;
+        $this->cuotasHostRepo = $cuotasHostRepo;
     }
 
 
@@ -62,18 +71,77 @@ class SincronizarController extends Controller
 
     public function show($id)
     {
-        $data = $this->repo->findByField2('idBranch',$id);
+        $clients = $this->clienteHostRepo->findByField2('id_host',$id);
+        $transacciones = $this->transaccionRepo->getAll();
 
-        foreach( $data as $key => $value)
+        $transaccionHost = [];
+        $cajeroTransaccion = [];
+
+        foreach($transacciones as $key => $value)
         {
-            $data = $this->repo->findOrFail($value->id);
-            $data['estado'] = 1;
-            $data->save();
+            $transaccionHost[$key] = $value->id;
         }
-        $success = true;
-        $message = "La actualizacion de datos se realizo con exito";
 
-        return compact('success','message');
+        foreach( $clients as $key => $value)
+        {
+            $cajeroTransaccion[$key] = $value->id_transaccion;
+        }
+
+
+
+        for($i = 0; $i < count($transaccionHost); $i++)
+        {
+            $contador = 0;
+            if(count($cajeroTransaccion) != 0)
+            {
+                for($x = 0; $x < count($cajeroTransaccion); $x++)
+                {
+                    if($transaccionHost[$i] == $cajeroTransaccion[$x])
+                    {
+                        $contador++;
+                    }
+                }
+            }
+
+
+            if($contador == 0)
+            {
+                $transaccionData = $this->transaccionRepo->findOrFail($transaccionHost[$i]);
+                $creditoData = $this->creditoRepo->findOrFail($transaccionData->idCredito);
+
+                if($transaccionData->tipoTransaccion == 'credito')
+                {
+
+                    $datos['id_host'] = $id;
+                    $datos['id_cliente'] = $creditoData->idCliente;
+                    $datos[ 'saldo'] = $transaccionData->monto;
+                    $datos['interes'] = $creditoData->interes;
+                    $datos['id_credito'] = $transaccionData->idCredito;
+                    $datos['id_transaccion'] = $transaccionData->id;
+                    $datos['tipo_transaccion'] = $transaccionData->tipoTransaccion;
+                    $registro = $this->clienteHostRepo->create($datos);
+                    $cuota = $this->cuotaRepo->findByField('idCredito',$creditoData->id);
+                    $fecha = new Carbon($cuota->fechaPago);
+
+                    for( $i = 1; $i <= $creditoData->no_cuotas ; $i++)
+                    {
+                        $dataCuota['id_clienteHost'] = $registro->id;
+                        $dataCuota['montoCuota'] = $cuota->montoCuota;
+                        $dataCuota['fechaPago'] = $fecha->addMonth();
+                        $dataCuota['estado'] = 'activa';
+                        $dataCuota['balance'] = $cuota->montoCuota;
+                        $this->cuotasHostRepo->create($dataCuota);
+                    }
+
+                }
+            }
+
+        }
+        return "listo";
+
+
+
+
 
     }
 

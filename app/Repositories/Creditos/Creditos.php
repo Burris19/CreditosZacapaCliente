@@ -14,6 +14,7 @@ class Creditos extends Model
         'interes',
         'is_host',
         'idCliente',
+        'no_cuotas',
     ];
 
     public $relations = [
