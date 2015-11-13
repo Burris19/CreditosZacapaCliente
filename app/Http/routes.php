@@ -20,12 +20,16 @@
 //Route::get('register', 'Auth\AuthController@getRegister');
 //Route::post('register', 'Auth\AuthController@postRegister');
 
+
+
 Route::group(['prefix' => '/', 'namespace' => 'Admin','middleware' => 'auth'], function() {
     Route::get('', [
         'as' => 'home', function() {
             return redirect()->to('clientes');
         }
     ]);
+
+    Route::get('reporte','PdfController@transacciones');
 
     Route::resource('clientes','ClientesController');
     Route::resource('pagos','PagosController');

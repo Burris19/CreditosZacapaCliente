@@ -14,6 +14,9 @@
       <a href="bitacora">
         <i class="glyphicon glyphicon-user"></i> <span>Bitacora</span>
       </a>
+      <a href="reporte">
+        <i class="glyphicon glyphicon-user"></i> <span>Reporte</span>
+      </a>
     </li>
   </ul>
 </section>
