@@ -71,6 +71,8 @@ class SincronizarController extends Controller
 
     public function show($id)
     {
+        $success = true;
+        $message = "La actualizacion se realizo correctamente";
         $clients = $this->clienteHostRepo->findByField2('id_host',$id);
         $transacciones = $this->transaccionRepo->getAll();
 
@@ -155,11 +157,13 @@ class SincronizarController extends Controller
                     $cuotaBranch['estado'] = 'Cancelada';
                     $cuotaBranch['balance'] = 00.00;
                     $cuotaBranch->save();
+
+
                 }
             }
 
         }
-        return 'listo';
+        return compact('success','message');
 
 
 

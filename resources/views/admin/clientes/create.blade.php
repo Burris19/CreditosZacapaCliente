@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <label for="fecha" class="col-sm-2 control-label">NIT</label>
                     <div class="col-sm-4">
-                        {!! Form::number('nit',null,['class' => 'form-control', 'placeholder' => 'NIT del Cliente', 'required']) !!}
+                        {!! Form::text('nit',null,['class' => 'form-control', 'placeholder' => 'NIT del Cliente', 'required']) !!}
                     </div>
                     <label for="fecha" class="col-sm-2 control-label">Nombre</label>
                     <div class="col-sm-4">

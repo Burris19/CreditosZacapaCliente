@@ -11,7 +11,6 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong></strong>
     </div>
-
     <div class="box-body">
         <div class="panel panel-info">
             <div class="panel-heading">

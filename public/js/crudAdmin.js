@@ -31,9 +31,14 @@ $(function(){
                         message.show();
 
                     }
-                    //setTimeout(function(){
-                    //    window.location.href = url;
-                    //},2000)
+                    if(url === "bitacoraPagos")
+                    {
+                        url = 'pagos';
+                    }
+
+                    setTimeout(function(){
+                        window.location.href = url;
+                    },2000)
                 }
             },
             error: function(xhr,ajaxOptions,thrownError){
@@ -42,6 +47,8 @@ $(function(){
             }
         });
     });
+
+
     $('.edit').on('click',function(e){
         e.preventDefault();
         id = $(this).data('id');
@@ -237,6 +244,23 @@ $(function(){
             type: 'get',
             success: function(response) {
               console.log(response);
+                if(response) {
+                    if(response.success){
+                        console.log(response.message);
+                        $('.response strong').css('color','black');
+                        $('.response strong').text(response.message);
+                        message.show();
+                    }else{
+                        console.log(response.message);
+                        $('.response strong').text('Error al guardar el registro');
+                        $('.response strong').css('color','orange');
+                        message.show();
+
+                    }
+                    setTimeout(function(){
+                        window.location.href = 'sincronizar';
+                    },2000)
+                }
             },
             error: function(xhr,ajaxOptions,thrownError){
                 console.log(xhr.status);
@@ -268,9 +292,9 @@ $(function(){
                         message.show();
 
                     }
-                    //setTimeout(function(){
-                    //    window.location.href = 'sincronizar';
-                    //},2000)
+                    setTimeout(function(){
+                        window.location.href = 'sincronizar';
+                    },2000)
                 }
             },
             error: function(xhr,ajaxOptions,thrownError){

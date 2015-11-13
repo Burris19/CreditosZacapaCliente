@@ -6,16 +6,16 @@
         <i class="glyphicon glyphicon-user"></i> <span>Clientes</span>
       </a>
       <a href="pagos">
-        <i class="glyphicon glyphicon-user"></i> <span>Pagos</span>
+        <i class="fa fa-money"></i> <span>Pagos</span>
       </a>
       <a href="sincronizar">
-        <i class="glyphicon glyphicon-user"></i> <span>Sincronizacion</span>
+        <i class="fa fa-exchange"></i> <span>Sincronizacion</span>
       </a>
       <a href="bitacora">
-        <i class="glyphicon glyphicon-user"></i> <span>Bitacora</span>
+        <i class="fa fa-database"></i> <span>Bitacora</span>
       </a>
       <a href="reporte">
-        <i class="glyphicon glyphicon-user"></i> <span>Reporte</span>
+        <i class="fa fa-file-text-o"></i> <span>Reporte</span>
       </a>
     </li>
   </ul>
