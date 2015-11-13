@@ -100,6 +100,9 @@ class BitacorasController extends Controller
         $bitacora['tipo_transaccion'] = 'debito';
         $bitacora['mensaje'] = 'Se registro un nuevo pago';
 
+        $bitacora['id_credito_branch'] = $data['idCreditoBranch'];
+        $bitacora['id_cuota_branch'] = $data['idShareBranch'];
+
         $success = true;
         $message = 'Pago Creado Exitosamente';
         if(! $this->repo->create($bitacora))

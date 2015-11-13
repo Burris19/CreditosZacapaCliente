@@ -77,6 +77,7 @@ class SincronizarController extends Controller
         $transaccionHost = [];
         $cajeroTransaccion = [];
 
+
         foreach($transacciones as $key => $value)
         {
             $transaccionHost[$key] = $value->id;
@@ -88,6 +89,8 @@ class SincronizarController extends Controller
         }
 
 
+
+        $prueba = 0;
 
         for($i = 0; $i < count($transaccionHost); $i++)
         {
@@ -133,11 +136,30 @@ class SincronizarController extends Controller
                         $this->cuotasHostRepo->create($dataCuota);
                     }
 
+                }else{
+
+                    $bitacoraBranch = $this->bitacoraRepo->findByField('idTransaccionMaster',$transaccionData->id);
+                    $prueba = $bitacoraBranch['id_cuota_branch'];
+
+                    $idCreditoBranch = $bitacoraBranch['id_credito_branch'];
+                    $idCuotaBranch = $bitacoraBranch['id_cuota_branch'];
+
+
+                    $creditoBranch = $this->clienteHostRepo->findOrFail($idCreditoBranch);
+                    $creditoBranch['saldo'] = $creditoBranch['saldo'] - $transaccionData['monto'];
+                    $creditoBranch->save();
+
+                    $cuotaBranch = $this->cuotasHostRepo->findOrFail($idCuotaBranch);
+
+                    $cuotaBranch = $this->cuotasHostRepo->findOrFail($idCuotaBranch);
+                    $cuotaBranch['estado'] = 'Cancelada';
+                    $cuotaBranch['balance'] = 00.00;
+                    $cuotaBranch->save();
                 }
             }
 
         }
-        return "listo";
+        return 'listo';
 
 
 
@@ -159,7 +181,8 @@ class SincronizarController extends Controller
         $horario = $fechaBranch->diffInHours($fechaSistema,false);
         $message= "Los datos fueron registrados con exito en el servidor";
         $success= true;
-        if($horario >0 and $horario < 24 )
+
+        if($horario >=0 and $horario < 24 )
         {
             $bitacora = $this->bitacoraRepo->findByFieldAnd2('id_cajero',$idCajero,'tipo','pendiente');
             $contador = 0;
@@ -182,6 +205,7 @@ class SincronizarController extends Controller
                     $credito['interes'] = $value->interes_credito;
                     $credito['is_host'] = false;
                     $credito['idCliente'] = $cliente->id;
+                    $credito['no_cuotas'] = $value['numero_cuotas_credito'];
 
                     $credito = $this->creditoRepo->create($credito);
                     $fechaPago = Carbon::now();
@@ -203,10 +227,11 @@ class SincronizarController extends Controller
                     $transaccion['idCajero'] = $idCajero;
                     $transaccion['idCredito'] = $credito->id;
                     $transaccion['idTipoMoneda'] = 1;
-                    $this->transaccionRepo->create($transaccion);
+                    $transaccionMaster = $this->transaccionRepo->create($transaccion);
 
                     $bitacoraData = $this->bitacoraRepo->findOrFail($value->id);
                     $bitacoraData['tipo'] = 'registrado';
+                    $bitacoraData['idTransaccionMaster'] = $transaccionMaster->id;
                     $bitacoraData->save();
                     $contador++;
 
@@ -220,7 +245,7 @@ class SincronizarController extends Controller
                     $transaccion['idCajero'] = $idCajero;
                     $transaccion['idCredito'] = $value->id_credito;
                     $transaccion['idTipoMoneda'] = $value->id_tipo_moneda;
-                    $this->transaccionRepo->create($transaccion);
+                    $transaccionMaster = $this->transaccionRepo->create($transaccion);
 
 
                     //Cancelar la cuota
@@ -240,9 +265,15 @@ class SincronizarController extends Controller
                     //Cancelar la bitacora
                     $bitacoraData = $this->bitacoraRepo->findOrFail($value->id);
                     $bitacoraData['tipo'] = 'registrado';
+                    $bitacoraData['idTransaccionMaster'] = $transaccionMaster->id;
                     $bitacoraData->save();
                     $contador++;
                 }
+            }
+
+            if($contador == 0 )
+            {
+                $message = "Ningun registro para enviar al servidor";
             }
         }
         else{
@@ -250,23 +281,9 @@ class SincronizarController extends Controller
             $success= false;
         }
 
-        if($contador == 0 )
-        {
-            $message = "Ningun registro para enviar al servidor";
-        }
+
 
         return compact('success','message');
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }

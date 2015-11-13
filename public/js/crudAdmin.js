@@ -18,23 +18,23 @@ $(function(){
             data: data,
             success: function(response) {
                 console.log(response);
-                //if(response) {
-                //    if(response.success){
-                //        console.log(response.message);
-                //        $('.response strong').css('color','black');
-                //        $('.response strong').text(response.message);
-                //        message.show();
-                //    }else{
-                //        console.log(response.message);
-                //        $('.response strong').text('Error al guardar el registro');
-                //        $('.response strong').css('color','orange');
-                //        message.show();
-                //
-                //    }
-                //    //setTimeout(function(){
-                //    //    window.location.href = url;
-                //    //},2000)
-                //}
+                if(response) {
+                    if(response.success){
+                        console.log(response.message);
+                        $('.response strong').css('color','black');
+                        $('.response strong').text(response.message);
+                        message.show();
+                    }else{
+                        console.log(response.message);
+                        $('.response strong').text('Error al guardar el registro');
+                        $('.response strong').css('color','orange');
+                        message.show();
+
+                    }
+                    //setTimeout(function(){
+                    //    window.location.href = url;
+                    //},2000)
+                }
             },
             error: function(xhr,ajaxOptions,thrownError){
                 console.log(xhr.status);
@@ -166,6 +166,8 @@ $(function(){
             type: 'get',
             success: function(response) {
 
+                console.log(response);
+
                 if(response.success)
                 {
                     $('#dpi').val(response['client']['dpi']);
@@ -173,8 +175,10 @@ $(function(){
                     $('#direccion').val(response['client']['direccion']);
                     $('#monto').val(response['share']['montoCuota']);
                     $('#fechaCuota').val(response['share']['fechaPago']);
-                    $('#idCredito').val(response['credit']['id']);
-                    $('#idShare').val(response['share']['id']);
+                    $('#idCredito').val(response['creditMaster']['id']);
+                    $('#idShare').val(response['shareMaster']['id']);
+                    $('#idCreditoBranch').val(response['credit']['id']);
+                    $('#idShareBranch').val(response['share']['id']);
                     var id = $('#selectMoneda').val();
                     getInfoMoneda(id);
                     $("#selectMoneda").removeAttr("disabled");
@@ -264,9 +268,9 @@ $(function(){
                         message.show();
 
                     }
-                    setTimeout(function(){
-                        window.location.href = 'sincronizar';
-                    },2000)
+                    //setTimeout(function(){
+                    //    window.location.href = 'sincronizar';
+                    //},2000)
                 }
             },
             error: function(xhr,ajaxOptions,thrownError){

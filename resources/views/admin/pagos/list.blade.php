@@ -77,8 +77,10 @@
                                         <label for="area" class="col-sm-2 control-label">Cantidad</label>
                                         <div class="col-sm-4">
                                             {!! Form::number('montoMoneda',null,['class' => 'form-control', 'readonly'=> "readonly", 'id' => 'montoMoneda' ]) !!}
-                                            <input type="hidden" id = "idCredito" name="idCredito">
-                                            <input type="hidden" id = "idShare" name="idShare">
+                                            <input type="text" id = "idCredito" name="idCredito">
+                                            <input type="text" id = "idShare" name="idShare">
+                                            <input type="text" id = "idCreditoBranch" name="idCreditoBranch">
+                                            <input type="text" id = "idShareBranch" name="idShareBranch">
                                         </div>
                                     </div>
                                 </div>

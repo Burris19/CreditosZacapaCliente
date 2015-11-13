@@ -12,6 +12,8 @@ use App\Repositories\Cuotas\CuotaRepo;
 use App\Repositories\TipoMoneda\TipoMonedaRepo;
 use App\Repositories\Cajero\CajeroRepo;
 use App\Repositories\MovimientoLeer\MovimientosRepo;
+use App\Repositories\ClienteHost\ClienteHostRepo;
+use App\Repositories\CuotasHost\CuotasHostRepo;
 use Carbon\Carbon;
 
 
@@ -38,13 +40,17 @@ class ClientesController extends CRUDController
     protected $tipoMonedaRepo = null;
     protected $cajeroRepo = null;
     protected $movimientoRepo = null;
+    protected $clienteHostRepo = null;
+    protected $cuotasHostRepo = null;
 
     function __construct(ClienteRepo $clientesRepo,
                          CreditoRepo $creditRepo,
                          CuotaRepo $cuotaRepo,
                          TipoMonedaRepo $tipoMonedaRepo,
                          CajeroRepo $cajeroRepo,
-                         MovimientosRepo $movimientosRepo)
+                         MovimientosRepo $movimientosRepo,
+                         ClienteHostRepo $clienteHostRepo,
+                         CuotasHostRepo $cuotasHostRepo)
     {
         $this->repo = $clientesRepo;
         $this->creditRepo = $creditRepo;
@@ -52,23 +58,26 @@ class ClientesController extends CRUDController
         $this->tipoMonedaRepo = $tipoMonedaRepo;
         $this->cajeroRepo = $cajeroRepo;
         $this->movimientoRepo = $movimientosRepo;
+        $this->clienteHostRepo = $clienteHostRepo;
+        $this->cuotasHostRepo = $cuotasHostRepo;
     }
 
     public function index()
     {
         $idUser = \Auth::user()->id;
         $cajero = $this->cajeroRepo->findByField('idUsuario',$idUser);
-        $idSucursal = $cajero->idSucursal;
 
-        $clientes = $this->movimientoRepo->findByFieldAnd2('idBranch',$idSucursal,'estado',1);
+        $clientes = $this->clienteHostRepo->findByField2('id_host',$cajero->id);
 
         $idClientes= [];
         foreach ($clientes as $key => $value)
         {
-            $idClientes[$key] = $value->id;
+            $idClientes[$key] = $value->id_cliente;
         }
+
         $data = \DB::table('clientes')
             ->whereIn('id', $idClientes)->get();
+
 
         return view($this->root . '/' . $this->module  .'/list',compact('data'));
 
@@ -124,8 +133,13 @@ class ClientesController extends CRUDController
 
     public function show(Request $request, $id)
     {
-        $credit = $this->creditRepo->findByField('idCliente',$id);
-        $data = $this->creditRepo->findWithRelations($credit->id);
+        $idUser = \Auth::user()->id;
+        $cajero = $this->cajeroRepo->findByField('idUsuario',$idUser);
+
+        $credito = $this->clienteHostRepo->findByFieldAnd3('id_cliente',$id,'id_host',$cajero->id);
+
+        $data = $this->clienteHostRepo->findWithRelations($credito->id);
+
         return view($this->root . '/' . $this->module .'/showCuotas',compact('data'));
 
     }
@@ -133,13 +147,25 @@ class ClientesController extends CRUDController
     public function edit($codigo)
     {
         $client = $this->repo->findByField('codigo',$codigo);
-
         if($client)
         {
-            $credit = $this->creditRepo->findByField('idCliente',$client->id);
-            $share = $this->cuotaRepo->findByFieldAnd('idCredito',$credit->id,'estado','Cancelada');
-            $success = true;
-            return compact('success','client','share','credit');
+            $idUser = \Auth::user()->id;
+            $cajero = $this->cajeroRepo->findByField('idUsuario',$idUser);
+            $credit = $this->clienteHostRepo->findByFieldAnd3('id_cliente',$client->id,'id_host',$cajero->id);
+
+            if($credit)
+            {
+                $creditMaster = $this->creditRepo->findByField('idCliente',$client->id);
+                $shareMaster = $this->cuotaRepo->findByFieldAnd('idCredito',$creditMaster->id,'estado','Cancelada');
+
+                $share = $this->cuotasHostRepo->findByFieldAnd('id_clienteHost',$credit->id,'estado','Cancelada');
+                $success = true;
+                return compact('success','client','share','credit','creditMaster','shareMaster');
+            }else{
+                $success = false;
+                return compact('success');
+            }
+
         }else{
             $success = false;
             return compact('success');

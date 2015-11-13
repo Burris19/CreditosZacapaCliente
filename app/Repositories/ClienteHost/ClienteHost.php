@@ -26,6 +26,6 @@ class ClienteHost extends Model
 
     public function details()
     {
-        return $this->hasMany('App\Repositories\CuotasHost\CuotasHost', 'id_credito', 'id');
+        return $this->hasMany('App\Repositories\CuotasHost\CuotasHost', 'id_clienteHost', 'id');
     }
 }
